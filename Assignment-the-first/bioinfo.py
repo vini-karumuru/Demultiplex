@@ -5,9 +5,7 @@
 '''This module is a collection of useful bioinformatics functions
 written during the Bioinformatics and Genomics Program coursework.'''
 
-__version__ = "0.1"         # Read way more about versioning here:
-                            # https://en.wikipedia.org/wiki/Software_versioning
-
+__version__ = "0.1"   
 
 def convert_phred(letter: str) -> int:
     '''
