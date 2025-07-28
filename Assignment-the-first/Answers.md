@@ -5,15 +5,27 @@
 
 | File name | label | Read length | Phred encoding |
 |---|---|---|---|
-| 1294_S1_L008_R1_001.fastq.gz |  |  |  |
-| 1294_S1_L008_R2_001.fastq.gz |  |  |  |
-| 1294_S1_L008_R3_001.fastq.gz |  |  |  |
-| 1294_S1_L008_R4_001.fastq.gz |  |  |  |
+| 1294_S1_L008_R1_001.fastq.gz | read1 | 101 | phred-33 |
+| 1294_S1_L008_R2_001.fastq.gz | index1 | 8 | phred-33 |
+| 1294_S1_L008_R3_001.fastq.gz | index2 | 8 | phred-33 |
+| 1294_S1_L008_R4_001.fastq.gz | read2 | 101 | phred-33 |
 
 2. Per-base NT distribution
     1. Use markdown to insert your 4 histograms here.
-    2. **YOUR ANSWER HERE**
-    3. **YOUR ANSWER HERE**
+    2. **There is no need for a quality score cutoff for index reads.** <br>
+	I calculated the Hamming distance (number of base differences between 2 sequences) between each pair of indexes (see `calculate_hamming.py`) and these are summary statistics that the script printed out:
+		```
+		The lowest Hamming distance is 3
+		The median Hamming distance is 6.0
+		The highest Hamming distance is 8
+		```
+		Even just looking at the lowest Hamming distance of 3, the chances that 3 bases will change to exactly match the bases of another index are very low. And during demultiplexing, in order for a pair of reads to be sorted into the incorrect sample, both of their indexes must have been sequenced incorrectly in exactly the same way (have the same exact sequencing errors). The chances of this happening are even lower. <br>
+		**There is no need for a quality score cutoff for biological reads.** <br>
+		Any reads that had many sequencing errors will likely not map well to the genome when we are aligning reads to the reference genome. Such reads will be naturally filtered out during that mapping step, so it is unnecessary to filter them out beforehand.
+    4. **7304664 indexes have Ns**
+       ```
+       zcat 1294_S1_L008_R2_001.fastq.gz 1294_S1_L008_R3_001.fastq.gz | sed -n '2~4p' | grep 'N' | wc -l
+       ```
     
 ## Part 2
 ### 1. Define the problem
