@@ -1,0 +1,3 @@
+Number of read-pairs with properly matched indexes (successfully demultiplexed): 6
+Number of read pairs with index-hopping observed: 4
+Number of read-pairs with unknown index(es): 3
