@@ -1,25 +1,34 @@
 # Assignment the First
 
 ## Part 1
-1. Be sure to upload your Python script. Provide a link to it here:
+1. Link to Python script: [Part 1 script](./plot_quality_distribution.py)
 
-| File name | label | Read length | Phred encoding |
-|---|---|---|---|
-| 1294_S1_L008_R1_001.fastq.gz | read1 | 101 | phred-33 |
-| 1294_S1_L008_R2_001.fastq.gz | index1 | 8 | phred-33 |
-| 1294_S1_L008_R3_001.fastq.gz | index2 | 8 | phred-33 |
-| 1294_S1_L008_R4_001.fastq.gz | read2 | 101 | phred-33 |
+	| File name | label | Read length | Phred encoding |
+	|---|---|---|---|
+	| 1294_S1_L008_R1_001.fastq.gz | read1 | 101 | phred-33 |
+	| 1294_S1_L008_R2_001.fastq.gz | index1 | 8 | phred-33 |
+	| 1294_S1_L008_R3_001.fastq.gz | index2 | 8 | phred-33 |
+	| 1294_S1_L008_R4_001.fastq.gz | read2 | 101 | phred-33 |
 
 2. Per-base NT distribution
-    1. Use markdown to insert your 4 histograms here.
-    2. **There is no need for a quality score cutoff for index reads.** <br>
+    1. Distribution plots: <br>
+	**R1**
+   	![R1 distribution](./R1_qs_dist.png)
+	**R2**
+	![R2 distribution](./R2_qs_dist.png)
+	**R3**
+	![R3 distribution](./R3_qs_dist.png)
+	**R4**
+	![R4 distribution](./R4_qs_dist.png)
+
+    3. **There is no need for a quality score cutoff for index reads.** <br>
 	I calculated the Hamming distance (number of base differences between 2 sequences) between each pair of indexes (see `calculate_hamming.py`) and these are summary statistics that the script printed out:
 		```
 		The lowest Hamming distance is 3
 		The median Hamming distance is 6.0
 		The highest Hamming distance is 8
 		```
-		Even just looking at the lowest Hamming distance of 3, the chances that 3 bases will change to exactly match the bases of another index are very low. And during demultiplexing, in order for a pair of reads to be sorted into the incorrect sample, both of their indexes must have been sequenced incorrectly in exactly the same way (have the same exact sequencing errors). The chances of this happening are even lower. <br>
+		Even just looking at the lowest Hamming distance of 3, the chances that 3 bases will change to exactly match the bases of another index are very low. And during demultiplexing, in order for a pair of reads to be sorted into the incorrect sample, both of their indexes must have been sequenced incorrectly in exactly the same way (have the same exact sequencing errors when the reverse complement of R3 is taken). The chances of this happening are even lower. <br>
 		**There is no need for a quality score cutoff for biological reads.** <br>
 		Any reads that had many sequencing errors will likely not map well to the genome when we are aligning reads to the reference genome. Such reads will be naturally filtered out during that mapping step, so it is unnecessary to filter them out beforehand.
     4. **7304664 indexes have Ns**
@@ -32,7 +41,7 @@
 We have received paired end sequencing data straight from the sequencer and these files have not been processed yet. The files are 4 zipped FASTQ files, each corresponding to R1 through R4, as read by the Illumina sequencer. The biological reads (R1 and R4) come from 24 different samples, which are identifiable by barcodes (R2 is barcode for R1 and R3 is barcode for R4), and we need to sort the reads by sample such that each sample gets its own set of 2 FASTQ files: one corresponding to the first/forward reads (R1) and the other corresponding to the second/reverse reads (R2) from the paired reads (i.e. barcodeA_R1.fq and barcodeA_R2.fq). During library prep, the barcodes attached to both biological reads are identical, so theoretically, the barcode for both biological reads should be identical. However, some barcodes may have been sequenced incorrectly (contain Ns or have low quality scores) and barcodes may have hopped between reads. Our goal is to sort the reads by sample while filtering out any reads that demonstrate index hopping, contain an invalid/unknown index, or have a low quality index. We will need to output two files (R1 and R2) per sample/index(total 48 files), two files (R1 and R2) for reads that have undergone index-hopping, and two files (R1 and R2) for unknown indexes or low-quality indexes, for a grand total of 52 files.
 ### 2. Describe output
 - Files (total 52):
-    - For each sample/index/barcode
+    - For each sample/index/barcode:
         - `<index>_R1.fq`
         - `<index>_R2.fq`
     - `index_hopped_R1.fq`
