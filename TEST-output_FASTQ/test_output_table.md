@@ -1,4 +1,4 @@
 | Index    | ATCGAAGA | GCTATCCT |
 | :------- | :------: | -------: |
-| ATCGAAGA | 4        | 1        |
-| GCTATCCT | 3        | 2        |
+| ATCGAAGA | 3        | 1        |
+| GCTATCCT | 4        | 2        |
